@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="900" viewBox="0 0 1500 900" role="img" aria-labelledby="title desc">
+  <title id="title">Titan Trust Engine architecture</title>
+  <desc id="desc">Company-scoped job evidence is captured, checked against requirements, linked to assurance, then reviewed under separately governed authority.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071321"/><stop offset="1" stop-color="#102943"/></linearGradient>
+    <linearGradient id="teal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#55E0CF"/><stop offset="1" stop-color="#4B9EF2"/></linearGradient>
+    <linearGradient id="amber" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#E7B668"/><stop offset="1" stop-color="#F18B53"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9" fill="#58CFCF"/></marker>
+    <marker id="goldArrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9" fill="#E7B668"/></marker>
+    <style>
+      .eyebrow{font:700 13px Arial,sans-serif;letter-spacing:2.2px;fill:#7391AA}.title{font:700 31px Arial,sans-serif;fill:#F3F8FC}.sub{font:400 16px Arial,sans-serif;fill:#A8BED0}
+      .label{font:700 12px Arial,sans-serif;letter-spacing:1.7px;fill:#7F9CB4}.node{fill:#112942;stroke:#2B4B68;stroke-width:1.5}.nodeStrong{fill:#102B3B;stroke:#43BEBB;stroke-width:2}
+      .txt{font:700 16px Arial,sans-serif;fill:#EDF5FC}.body{font:400 13px Arial,sans-serif;fill:#ADC0D0}.tiny{font:400 12px Arial,sans-serif;fill:#9EB4C7}
+      .route{fill:none;stroke:url(#teal);stroke-width:3;filter:url(#glow)}.soft{fill:none;stroke:#4F7998;stroke-width:2}.gold{fill:none;stroke:url(#amber);stroke-width:3}
+    </style>
+  </defs>
+  <rect width="1500" height="900" rx="28" fill="url(#bg)"/>
+  <circle cx="1380" cy="80" r="210" fill="#1B3C55" opacity=".23"/><circle cx="60" cy="830" r="200" fill="#15374F" opacity=".2"/>
+  <text x="64" y="62" class="eyebrow">TITAN TRUST · EVIDENCE ASSURANCE</text>
+  <text x="64" y="111" class="title">Proof of work, connected to a governed decision</text>
+  <text x="64" y="142" class="sub">Capture the record · check the requirement · preserve provenance · route exceptions for review</text>
+
+  <text x="66" y="205" class="label">01 · CAPTURE JOB CONTEXT</text>
+  <rect x="64" y="228" width="308" height="202" rx="18" class="node"/>
+  <text x="88" y="268" class="txt">Field evidence</text>
+  <text x="88" y="302" class="body">Photos and files · before / after</text>
+  <text x="88" y="331" class="body">Attendance · presence · GPS signals</text>
+  <text x="88" y="360" class="body">Incidents · client sign-off</text>
+  <text x="88" y="399" class="tiny">company · job · capture time · file hash</text>
+
+  <text x="430" y="205" class="label">02 · APPLY EVIDENCE POLICY</text>
+  <rect x="428" y="228" width="308" height="202" rx="18" class="node"/>
+  <text x="452" y="268" class="txt">Requirements &amp; readiness</text>
+  <text x="452" y="302" class="body">Match by template, job type, site type</text>
+  <text x="452" y="331" class="body">Count captured proof by evidence class</text>
+  <text x="452" y="360" class="body">Return missing items and readiness state</text>
+  <text x="452" y="399" class="tiny">before · after · incident · sign-off · general</text>
+
+  <text x="794" y="205" class="label">03 · CONNECT TO ASSURANCE</text>
+  <rect x="792" y="228" width="308" height="202" rx="18" class="nodeStrong"/>
+  <text x="816" y="268" class="txt">Canonical evidence references</text>
+  <text x="816" y="302" class="body">EvidenceRefFactory preserves provenance</text>
+  <text x="816" y="331" class="body">File hash · job link · source · trust flags</text>
+  <text x="816" y="360" class="body">AssuranceBridge emits review signals</text>
+  <text x="816" y="399" class="tiny">company-scoped · auditable · inspectable</text>
+
+  <text x="1158" y="205" class="label">04 · REVIEW THE RECORD</text>
+  <rect x="1156" y="228" width="280" height="202" rx="18" class="node"/>
+  <text x="1180" y="268" class="txt">Timeline &amp; review</text>
+  <text x="1180" y="302" class="body">Typed job events and compliance state</text>
+  <text x="1180" y="331" class="body">Manager review · incident resolution</text>
+  <text x="1180" y="360" class="body">Explicit override permission</text>
+  <text x="1180" y="399" class="tiny">human review remains in the loop</text>
+
+  <path d="M372 329H421M736 329H785M1100 329H1149" class="route" marker-end="url(#arrow)"/>
+  <path d="M950 430V485H570V438" class="soft" marker-end="url(#arrow)"/>
+  <text x="648" y="477" class="tiny">Readiness result and evidence gaps can inform the next review</text>
+
+  <rect x="64" y="536" width="1372" height="126" rx="19" fill="#0C2134" stroke="#294861"/>
+  <text x="92" y="575" class="label">COMPANY BOUNDARY</text>
+  <text x="92" y="612" class="txt">company_id</text>
+  <text x="260" y="612" class="body">Resolved from host execution context or authenticated company. Missing context blocks scoped access.</text>
+  <path d="M92 634H1407" stroke="#294861" stroke-width="1"/>
+  <text x="92" y="650" class="tiny">Trust and evidence records inform assurance; a trust label does not grant permission, approval, or execution authority.</text>
+
+  <rect x="64" y="704" width="648" height="126" rx="19" fill="#11283D" stroke="#2C4D68"/>
+  <text x="92" y="743" class="label">TRUST ENGINE · DOMAIN CAPABILITIES</text>
+  <text x="92" y="780" class="txt">Capture · measure readiness · retain evidence · expose exceptions</text>
+  <text x="92" y="807" class="tiny">Risk-classified reads and governed writes · no auto-execute business mutations</text>
+  <rect x="788" y="704" width="648" height="126" rx="19" fill="#251F1A" stroke="#8C683B"/>
+  <text x="816" y="743" class="label" style="fill:#DDB36F">HOST GOVERNANCE · SEPARATE AUTHORITY</text>
+  <text x="816" y="780" class="txt">Permission · approval · execution receipt</text>
+  <text x="816" y="807" class="tiny">High-risk state changes stay online and governed; offline access never increases authority</text>
+  <path d="M712 767H778" class="gold" marker-end="url(#goldArrow)"/>
+</svg>
