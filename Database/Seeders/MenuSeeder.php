@@ -47,24 +47,17 @@ class MenuSeeder extends Seeder
         $items = [
             [
                 'key' => 'jobs.verify',
-                'label' => 'Verify',
+                'label' => 'Trust Evidence',
                 'icon' => 'shield-check',
                 'route' => 'dashboard.user.titan-trust.index',
                 'order' => 10,
-            ],
-            [
-                'key' => 'jobs.verify.gallery',
-                'label' => 'Evidence Gallery',
-                'icon' => 'images',
-                'route' => 'dashboard.user.titan-trust.gallery',
-                'order' => 20,
             ],
             [
                 'key' => 'jobs.verify.incidents',
                 'label' => 'Incidents',
                 'icon' => 'alert-triangle',
                 'route' => 'dashboard.user.titan-trust.incidents',
-                'order' => 30,
+                'order' => 20,
             ],
         ];
 

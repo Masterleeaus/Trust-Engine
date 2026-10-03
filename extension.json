@@ -2,7 +2,7 @@
   "name": "TitanTrust",
   "type": "extension",
   "version": "2.1.0",
-  "description": "TitanTrust (Jobs trust, proof, compliance & audit) extension for magicai",
+  "description": "Company-scoped job evidence, assurance, incidents, sign-off, and audit review extension for Titan Zero/MagicAI.",
   "slug": "titan-trust",
   "provider": "App\\Extensions\\TitanTrust\\System\\TitanTrustServiceProvider",
   "key": "titan-trust",
@@ -20,8 +20,7 @@
       "migrations_path": "database/migrations",
       "run_seeders": true,
       "seeders": [
-        "App\\Extensions\\TitanTrust\\Database\\Seeders\\MenuSeeder",
-        "App\\Extensions\\TitanTrust\\Database\\Seeders\\PermissionsSeeder"
+        "App\\Extensions\\TitanTrust\\Database\\Seeders\\MenuSeeder"
       ],
       "idempotent_required": true
     },
@@ -30,21 +29,22 @@
       "expected_keys": [
         "jobs",
         "jobs.verify",
-        "jobs.verify.gallery",
         "jobs.verify.incidents"
       ],
       "route_drift_policy": "sync_to_manifest",
       "route_map": {
         "jobs.verify": "dashboard.user.titan-trust.index",
-        "jobs.verify.gallery": "dashboard.user.titan-trust.gallery",
-        "jobs.verify.incidents": "dashboard.user.titan-trust.incidents"
+        "jobs.verify.incidents": "titantrust.review.index"
       }
     },
     "routes": {
       "expected_named_routes": [
         "dashboard.user.titan-trust.index",
-        "dashboard.user.titan-trust.gallery",
-        "dashboard.user.titan-trust.incidents"
+        "titantrust.review.index",
+        "titantrust.review.override",
+        "titantrust.review.incidents",
+        "titantrust.review.incidents.resolve",
+        "titantrust.jobs.timeline"
       ],
       "provider_boot_required": true
     }
@@ -58,8 +58,6 @@
       "Http/Controllers/IncidentController.php": "547627e4938b9ecbf013b6179e88c9e0676bfa70b44e31bf3324e20c48917525",
       "Http/Controllers/JobTimelineController.php": "15ba8793af7eaf52bfa5d4656d3eaf4a524f593f61342a8ff1a3ea82a9acb1db",
       "Http/Controllers/ManagerReviewController.php": "3094f5419c997301e563cfcadf3298d712072d9b4ebbd84b973a1b56a8663fd9",
-      "POST_STEPS_H1.txt": "2ed43e49729dee5e03624cff3b1a4aed21551d19710c8dca0ce4611388a31d7b",
-      "ROLLBACK_H1.txt": "b8c683af484cf07703b9a3064a1b21ae0e52de5220d9072fb6f5711db094ead5",
       "System/Assurance/AssuranceBridge.php": "a357ff9ee24e594198cd64d30570bea13af424649de7eb5c775189c05270d3ce",
       "System/Assurance/EvidenceRefFactory.php": "707f18a9fc5e07a38c44e811d4f8f6d1ac4a006e9a2105b7155427f765044f96",
       "System/Audit/JobEventWriter.php": "3e80e03bb832cc1c319d6d9d2949712d35b2673afe408f7f2e3301a3d5d803ce",
@@ -74,7 +72,6 @@
       "System/Http/Controllers/SignoffController.php": "d7a3d95f90240bffc9c5bdd284c27ebd9bc5ff0a23c706454952636516952c9d",
       "System/Http/Middleware/CaptureAuditContext.php": "b9ba66d64c378f553b6c2b1382c636e63365c59dd322e5034053098c81a52fc1",
       "System/Http/Requests/StoreEvidenceRequest.php": "cdce7f8086d8e42031d1297b71e22b0a6ffeda00ed5363a3a626d296c6edc962",
-      "System/Http/Resources/.gitkeep": "240a3e0d37d2e86b614063f5347eb02d4f99ca6c254de6b82871ff8d95532a7d",
       "System/Models/Concerns/TenantScoped.php": "af7a4e6c34c990b08f2b51ec232b640ab19d880b40955a055f23eb3a4b876713",
       "System/Models/WorkEvidenceFile.php": "be66fc798636b4c1d89af948f033c66ad07ae98278bc80d96358b4cf7427695b",
       "System/Models/WorkEvidenceItem.php": "63cad578c3dc275432f08a76dfdafaf64dcc777c4cb4d7456b945d42edb1ee67",
@@ -85,7 +82,6 @@
       "System/Security/TrustAuthorization.php": "acaba1af8c75be5d15469b977f7a057f62b6d4e19240afb543bfa3458c0c631a",
       "System/Services/AttendanceDeriver.php": "1e44265b9b66c1353147416aebd03eff3c53ff07c30acb642606097649f097c3",
       "System/Services/EvidenceReadiness.php": "e75bd96aaef7ccce2695648337466aa5f1359966b991ae7900c8042b57528c95",
-      "System/Services/OpenAIService.php": "b8c48a320fef1b275c5de11e08d845288803890f040d3fef94433b4975738e4a",
       "System/Services/TrustEvaluator.php": "ce6d13c18c87717ac8bc3224540fa0201d3fde38e38776bdfb08ed84abc611db",
       "System/Support/CompanyContext.php": "bdba3ae12491455c6a00b39901b9179d4351b7b52ab28436688eca60cec1da80",
       "System/TitanTrustServiceProvider.php": "043b65e603bf3dbbb97c7b7e22ea21cdf477c30cbc465c75b0c9aa78cb86f645",
@@ -112,27 +108,15 @@
       "resources/interface/interface-manifest.json": "ca60e05e1c475030fd42f832b0919ba6792dc98a7444825b4ff1f89b1f944e45",
       "resources/lang/en/messages.php": "872387174def9dddc45e646004a444fa46466858ec37c6a9406d4ce97691e74b",
       "resources/views/capture/index.blade.php": "25786489c099f427aed94272d94911161787fff9c3d90ec2879c594cb7bd6c86",
-      "resources/views/editor/editor-canvas.blade.php": "cc84d6b6d8cd21cf10de40e96324c5cecfde649a6ca1d94bdd31fc72ce338325",
-      "resources/views/editor/editor-sidebar.blade.php": "ef63e0cfcf986c900c8feca7f48d297b03ce774ef85fa61234b40293ca6336d7",
-      "resources/views/editor/editor-toolbar.blade.php": "195e6e7d6614eeb4d529b8cb1d2162ace15e4709fda94c328bfbbbca3bc930b0",
-      "resources/views/editor/editor.blade.php": "8734431c8e93b03e7ddd164b2cff01327d3c99634a7aa5bb6f1d6e7ac7de7f27",
       "resources/views/evidence/create.blade.php": "d365a460399673a4dae1b5bb341f3b4aaaa4e9aca71b27f53a9140eaae4b2be1",
       "resources/views/evidence/index.blade.php": "bb76a45bfd1acdc4fc53113134ea6bd06ed727511ccdfbf05a607611f9f8146e",
       "resources/views/evidence/show.blade.php": "80ec1e4f64be161841019193e13b66f0c121409b401921fc1e8e69b62564c173",
-      "resources/views/gallery/gallery.blade.php": "bb0e5c2098b2a9960b8af44a24060a5caa14601e59c84b5a26a66a7314875912",
-      "resources/views/home/advanced-options.blade.php": "d60b6d67383c8a12fe5839fb0dce34c525b4895d5290f0d5325299feb63c2465",
-      "resources/views/home/predefined-prompts-grid.blade.php": "fdf7bfcba10e81182a90cce35b266b0cb92e4b392855830bc6dd6261c3aaab01",
-      "resources/views/home/recent-images-grid.blade.php": "19e39ce2c5bc59342a0ab09511b4bd0c955ed1901ff0dd4baf096e5566e1d64e",
-      "resources/views/home/tools-grid.blade.php": "def90c21a06c74aff95fc5ec6d316465cea49f6cd1588908ae179b24311fdec6",
       "resources/views/incidents/create.blade.php": "2c6dfb3e1d631d432ae1a5fcd492f306c49a1d570b94f4ac7b9f983c303846e9",
       "resources/views/incidents/index.blade.php": "d21e5c07a623d43bd04dbd1f61a962aa8ca608c5b2844044fd45259fb158c23b",
       "resources/views/incidents/show.blade.php": "574ec65ce19a33bd86bfbdaa6f1a6c75f883585054015052202e221e4225951a",
       "resources/views/rules/create.blade.php": "46deba5df26455c402c1e4a87f9a4fb844f333358b72b6a1c9249892a326c3b0",
       "resources/views/rules/edit.blade.php": "207e77df49d1adc79943aa5d54be21a0962ed432f4cfe2ac50bd02ea8347709e",
       "resources/views/rules/index.blade.php": "29318583c304448ce9d573d4150185bda12e8222b373f4f12918d680c69f61d0",
-      "resources/views/shared-components/image-grid.blade.php": "f4c8949d0c7cdaff14db6d735e77922f35b4cb24af4f434cd12a4610525d741d",
-      "resources/views/shared-components/image-modal.blade.php": "d98230d2a888125b3c3d035374b3ba3d1019808af150b40e4ac43424a73c8fb7",
-      "resources/views/shared-components/top-navbar.blade.php": "981e6979f95e5fc33eafe8cd7295a29ee884eacfa6d5e7daab8fb686987e8701",
       "resources/views/signoff/already.blade.php": "e4c8b50699a5b4555166bb7b73ed93649c602bdde61fb61e6c366418397e200d",
       "resources/views/signoff/public.blade.php": "6f3d5762255c2e5bc2a69c41defcd1fefdad34098172d7c7893e3d8ff3f7c586",
       "resources/views/signoff/requested.blade.php": "26361fe119b4e617fb0d69844ed7b94bab87a062eb1a1d2611a6509c6b9a84d8",
