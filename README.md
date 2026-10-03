@@ -103,7 +103,7 @@ assets/                         Original branded banner and architecture infogra
 
 This repository contains an extension package for the Titan Zero/MagicAI Laravel host, not a standalone Composer application. The extension manifest declares PHP 8+, Laravel 8+, and the host `menu` extension as its direct package requirements. Use the host’s extension installation workflow so its service provider, migrations, and menus are registered.
 
-For an existing compatible host installation, the packaged hardening notes use this sequence:
+For an existing compatible host installation, run the extension migration through the host’s module installer. If the host requires the Artisan workflow, clear cached discovery before and after migration:
 
 ```bash
 php artisan optimize:clear
@@ -123,7 +123,7 @@ The package includes standalone PHP checks for Trust authorization and Titan App
 
 ## Version and source
 
-This repository is populated from **Titan Trust Master v2.1.0**, the latest packaged Trust archive located in the project Library during this update. The untouched ZIP is preserved at [`archive/Titan Trust Master v2.1.0.zip`](archive/Titan%20Trust%20Master%20v2.1.0.zip); the package files are extracted at the repository root so the extension layout remains recognizable to the host installer.
+This repository contains the extracted **Titan Trust Master v2.1.0** package, with the extension files at the repository root so the layout remains recognizable to the host installer. The source ZIP and temporary deployment notes have been removed to avoid duplicating the package in Git; the version is recorded in `extension.json`.
 
 ---
 
