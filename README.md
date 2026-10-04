@@ -18,6 +18,8 @@
 
 [![Trust signal evaluation](https://github.com/Masterleeaus/Trust-Engine/actions/workflows/trust-signal-eval.yml/badge.svg)](https://github.com/Masterleeaus/Trust-Engine/actions/workflows/trust-signal-eval.yml)
 
+<p align="center">Evidence snapshot: <strong>32 deterministic scenarios · 0 failures</strong> — <a href="https://github.com/Masterleeaus/Trust-Engine/actions/runs/37176074419">CI run</a> · <a href="scripts/trust-signal-eval.php">evaluator source</a> · bounded to the packaged trust-signal heuristic.</p>
+
 ---
 
 ## Product overview
