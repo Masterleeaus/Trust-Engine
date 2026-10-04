@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+if (PHP_VERSION_ID < 80000) {
+    fwrite(STDERR, "Trust signal evaluation requires PHP 8.0 or newer." . PHP_EOL);
+    exit(2);
+}
+
 $root = dirname(__DIR__);
 $scenarioPath = $root . '/evaluations/trust-signal/scenarios.json';
 $scenarioDocument = json_decode((string) file_get_contents($scenarioPath), true, 512, JSON_THROW_ON_ERROR);
