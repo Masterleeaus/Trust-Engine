@@ -1,0 +1,514 @@
+{
+    "title": "Titan Trust GPS signal evaluation",
+    "evaluated_at_utc": "2026-10-04T02:47:04Z",
+    "evaluated_commit": "8fc45e70d92065ce134c393c4549472ce0cc9754",
+    "scenario_seed": 20261004,
+    "random_sampling": false,
+    "scenario_count": 32,
+    "scenario_sha256": "b0e923ad40cfc76c3537f0123abe4aa230a53c8ed7332353f554459f2837fdd1",
+    "php_version": "8.2.34",
+    "baseline": {
+        "name": "always-high/no-flags",
+        "description": "Labels every observation high and emits no quality flags; illustrative bypass control only.",
+        "output_mismatches": 25,
+        "scenarios_total": 32
+    },
+    "metrics": {
+        "trust_level_mismatches": 0,
+        "quality_flag_mismatches": 0,
+        "scenario_failures": 0,
+        "no_gps_high_signals": 0,
+        "no_gps_cases_total": 6,
+        "very_low_accuracy_high_signals": 0,
+        "very_low_accuracy_cases_total": 5,
+        "medium_threshold_correct": 8,
+        "medium_threshold_cases_total": 8,
+        "missing_accuracy_high_signals": 3,
+        "missing_accuracy_flagged": 3,
+        "missing_accuracy_with_gps_total": 3
+    },
+    "diagnostics": {
+        "missing_accuracy_behavior": "The current implementation flags missing accuracy but may still return a high level when coordinates are present. A high level is a coarse signal, not proof of attendance."
+    },
+    "rubric": "Check TrustEvaluator's documented GPS-presence and accuracy thresholds, flag coverage, and threshold boundaries. Missing accuracy is expected to emit no_accuracy; its level is reported separately as a design diagnostic. This does not claim GPS proves attendance or truth.",
+    "cases": [
+        {
+            "id": "accurate_device_zero_error",
+            "category": "high-accuracy",
+            "expected_level": "high",
+            "actual_level": "high",
+            "expected_flags": [],
+            "actual_flags": [],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "accurate_device_50m",
+            "category": "high-accuracy",
+            "expected_level": "high",
+            "actual_level": "high",
+            "expected_flags": [],
+            "actual_flags": [],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "accuracy_boundary_100m",
+            "category": "threshold-boundary",
+            "expected_level": "high",
+            "actual_level": "high",
+            "expected_flags": [],
+            "actual_flags": [],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "accurate_missing_source",
+            "category": "source-provenance",
+            "expected_level": "high",
+            "actual_level": "high",
+            "expected_flags": [],
+            "actual_flags": [],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "accurate_server_source",
+            "category": "source-provenance",
+            "expected_level": "high",
+            "actual_level": "high",
+            "expected_flags": [
+                "non_device_source"
+            ],
+            "actual_flags": [
+                "non_device_source"
+            ],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "accurate_manual_source",
+            "category": "source-provenance",
+            "expected_level": "high",
+            "actual_level": "high",
+            "expected_flags": [
+                "non_device_source"
+            ],
+            "actual_flags": [
+                "non_device_source"
+            ],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "accurate_device_source",
+            "category": "source-provenance",
+            "expected_level": "high",
+            "actual_level": "high",
+            "expected_flags": [],
+            "actual_flags": [],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "accurate_empty_source",
+            "category": "source-provenance",
+            "expected_level": "high",
+            "actual_level": "high",
+            "expected_flags": [],
+            "actual_flags": [],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "just_over_100m_medium",
+            "category": "threshold-boundary",
+            "expected_level": "medium",
+            "actual_level": "medium",
+            "expected_flags": [
+                "low_accuracy"
+            ],
+            "actual_flags": [
+                "low_accuracy"
+            ],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "150m_medium",
+            "category": "medium-accuracy",
+            "expected_level": "medium",
+            "actual_level": "medium",
+            "expected_flags": [
+                "low_accuracy"
+            ],
+            "actual_flags": [
+                "low_accuracy"
+            ],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "499_99m_medium",
+            "category": "threshold-boundary",
+            "expected_level": "medium",
+            "actual_level": "medium",
+            "expected_flags": [
+                "low_accuracy"
+            ],
+            "actual_flags": [
+                "low_accuracy"
+            ],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "accuracy_boundary_500m_medium",
+            "category": "threshold-boundary",
+            "expected_level": "medium",
+            "actual_level": "medium",
+            "expected_flags": [
+                "low_accuracy"
+            ],
+            "actual_flags": [
+                "low_accuracy"
+            ],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "medium_server_source",
+            "category": "source-provenance",
+            "expected_level": "medium",
+            "actual_level": "medium",
+            "expected_flags": [
+                "low_accuracy",
+                "non_device_source"
+            ],
+            "actual_flags": [
+                "low_accuracy",
+                "non_device_source"
+            ],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "medium_import_source",
+            "category": "source-provenance",
+            "expected_level": "medium",
+            "actual_level": "medium",
+            "expected_flags": [
+                "low_accuracy",
+                "non_device_source"
+            ],
+            "actual_flags": [
+                "low_accuracy",
+                "non_device_source"
+            ],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "just_over_500m_low",
+            "category": "threshold-boundary",
+            "expected_level": "low",
+            "actual_level": "low",
+            "expected_flags": [
+                "low_accuracy",
+                "very_low_accuracy"
+            ],
+            "actual_flags": [
+                "low_accuracy",
+                "very_low_accuracy"
+            ],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "1000m_low",
+            "category": "very-low-accuracy",
+            "expected_level": "low",
+            "actual_level": "low",
+            "expected_flags": [
+                "low_accuracy",
+                "very_low_accuracy"
+            ],
+            "actual_flags": [
+                "low_accuracy",
+                "very_low_accuracy"
+            ],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "latitude_missing",
+            "category": "missing-position",
+            "expected_level": "low",
+            "actual_level": "low",
+            "expected_flags": [
+                "no_gps"
+            ],
+            "actual_flags": [
+                "no_gps"
+            ],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "longitude_missing",
+            "category": "missing-position",
+            "expected_level": "low",
+            "actual_level": "low",
+            "expected_flags": [
+                "no_gps"
+            ],
+            "actual_flags": [
+                "no_gps"
+            ],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "both_coordinates_missing",
+            "category": "missing-position",
+            "expected_level": "low",
+            "actual_level": "low",
+            "expected_flags": [
+                "no_gps"
+            ],
+            "actual_flags": [
+                "no_gps"
+            ],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "missing_position_and_600m",
+            "category": "missing-position",
+            "expected_level": "low",
+            "actual_level": "low",
+            "expected_flags": [
+                "no_gps",
+                "low_accuracy",
+                "very_low_accuracy"
+            ],
+            "actual_flags": [
+                "no_gps",
+                "low_accuracy",
+                "very_low_accuracy"
+            ],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "501m_server_source",
+            "category": "source-provenance",
+            "expected_level": "low",
+            "actual_level": "low",
+            "expected_flags": [
+                "low_accuracy",
+                "very_low_accuracy",
+                "non_device_source"
+            ],
+            "actual_flags": [
+                "low_accuracy",
+                "very_low_accuracy",
+                "non_device_source"
+            ],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "missing_accuracy_device",
+            "category": "missing-accuracy",
+            "expected_level": "high",
+            "actual_level": "high",
+            "expected_flags": [
+                "no_accuracy"
+            ],
+            "actual_flags": [
+                "no_accuracy"
+            ],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "missing_accuracy_no_source",
+            "category": "missing-accuracy",
+            "expected_level": "high",
+            "actual_level": "high",
+            "expected_flags": [
+                "no_accuracy"
+            ],
+            "actual_flags": [
+                "no_accuracy"
+            ],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "missing_accuracy_server_source",
+            "category": "missing-accuracy",
+            "expected_level": "high",
+            "actual_level": "high",
+            "expected_flags": [
+                "no_accuracy",
+                "non_device_source"
+            ],
+            "actual_flags": [
+                "no_accuracy",
+                "non_device_source"
+            ],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "equator_accuracy_boundary",
+            "category": "coordinate-boundary",
+            "expected_level": "high",
+            "actual_level": "high",
+            "expected_flags": [],
+            "actual_flags": [],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "equator_medium_accuracy",
+            "category": "coordinate-boundary",
+            "expected_level": "medium",
+            "actual_level": "medium",
+            "expected_flags": [
+                "low_accuracy"
+            ],
+            "actual_flags": [
+                "low_accuracy"
+            ],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "another_medium_accuracy",
+            "category": "medium-accuracy",
+            "expected_level": "medium",
+            "actual_level": "medium",
+            "expected_flags": [
+                "low_accuracy",
+                "non_device_source"
+            ],
+            "actual_flags": [
+                "low_accuracy",
+                "non_device_source"
+            ],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "case-sensitive_device_source",
+            "category": "source-provenance",
+            "expected_level": "high",
+            "actual_level": "high",
+            "expected_flags": [
+                "non_device_source"
+            ],
+            "actual_flags": [
+                "non_device_source"
+            ],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "mobile_source",
+            "category": "source-provenance",
+            "expected_level": "high",
+            "actual_level": "high",
+            "expected_flags": [
+                "non_device_source"
+            ],
+            "actual_flags": [
+                "non_device_source"
+            ],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "missing_accuracy_and_latitude",
+            "category": "missing-input",
+            "expected_level": "low",
+            "actual_level": "low",
+            "expected_flags": [
+                "no_gps",
+                "no_accuracy"
+            ],
+            "actual_flags": [
+                "no_gps",
+                "no_accuracy"
+            ],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "missing_position_very_low_accuracy",
+            "category": "missing-input",
+            "expected_level": "low",
+            "actual_level": "low",
+            "expected_flags": [
+                "no_gps",
+                "low_accuracy",
+                "very_low_accuracy"
+            ],
+            "actual_flags": [
+                "no_gps",
+                "low_accuracy",
+                "very_low_accuracy"
+            ],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        },
+        {
+            "id": "api_source_at_100m",
+            "category": "source-provenance",
+            "expected_level": "high",
+            "actual_level": "high",
+            "expected_flags": [
+                "non_device_source"
+            ],
+            "actual_flags": [
+                "non_device_source"
+            ],
+            "level_match": true,
+            "flags_match": true,
+            "error": null
+        }
+    ]
+}
