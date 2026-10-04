@@ -10,6 +10,7 @@
   <a href="#architecture">Architecture</a> ·
   <a href="#capabilities">Capabilities</a> ·
   <a href="#governance-and-boundaries">Governance</a> ·
+  <a href="#ai-and-agent-boundary">AI boundary</a> ·
   <a href="#installation">Installation</a>
 </p>
 
@@ -84,21 +85,39 @@ The extension manifest declares risk-classified capabilities for evidence reads 
 
 Titan Trust is an **evidence-assurance component**, not a general-purpose identity-verification product, autonomous permission service, or standalone agent reputation score. Its GPS-based trust level is a small heuristic signal based on location presence and reported accuracy. The consuming assurance and authority layers must interpret evidence in context.
 
+## AI and agent boundary
+
+This repository is supporting infrastructure for AI-enabled operations, not an AI model or autonomous agent. The current tree contains no model client, prompt runner, or agent loop. Its implemented contribution is the evidence and assurance substrate that a host workflow or agent can consume:
+
+- company-scoped evidence, readiness, provenance, timeline, and incident projections;
+- risk-classified workforce capabilities with fail-closed execution context and explicit receipts; and
+- authority-neutral interface contributions where cached reads remain possible but governed actions stay online.
+
+The workforce manifest explicitly disables auto-executed business mutations, and the interface manifest marks contributions as non-executable UI. Any AI or agent composition belongs to the host platform and is not claimed as functionality of this repository.
+
 ## Repository map
 
 ```text
-System/                         Domain services, models, controllers, tenancy, assurance bridge
-Http/                           Host-compatible review and timeline controllers
-Database/                       Menu seeder
-database/migrations/            Evidence, sign-off, attendance, incident, and job-schema migrations
-resources/views/                Capture, evidence, rules, incidents, sign-off, and review screens
-resources/workforce/            Risk-classified workforce capability manifest
-resources/interface/            Authority-neutral Titan app surface contributions
-routes/                         Extension routes
-config/                         Evidence storage, upload, MIME, and sign-off settings
-tests/                          Authorization, convergence, and evidence regression checks
-archive/                        Original Titan Trust Master v2.1.0 package
-assets/                         Original branded banner and architecture infographic
+System/Services/TrustEvaluator.php       GPS heuristic and explicit quality flags
+System/Services/EvidenceReadiness.php    Context-specific evidence rule selection and gap counts
+System/Assurance/EvidenceRefFactory.php  Canonical evidence/sign-off/incident/presence provenance
+System/Models/Concerns/TenantScoped.php  Fail-closed company execution-context scoping
+System/Http/Controllers/                 Capture, evidence, presence, incidents, rules, and sign-off
+System/Audit/                            Typed job events and review timeline
+System/Compliance/                       Typed job compliance state
+Http/Controllers/                        Host-compatible manager review and timeline controllers
+Database/                                Menu seeder
+database/migrations/                     Evidence, sign-off, attendance, incident, and job-schema migrations
+resources/views/                         Capture, evidence, rules, incidents, sign-off, and review screens
+resources/workforce/                     Risk-classified workforce capability manifest
+resources/interface/                     Authority-neutral Titan app surface contributions
+routes/                                  Extension routes
+config/                                  Evidence storage, upload, MIME, and sign-off settings
+tests/ and Tests/                        Standalone checks and extraction-context regression fixture
+evaluations/                             Fixed trust-signal scenario corpus
+scripts/                                 Reproducible standalone evaluators
+eval-results/                            Committed Markdown and machine-readable results
+assets/                                  Original branded banner and architecture infographic
 ```
 
 ## Installation
@@ -150,6 +169,15 @@ The test corpus is [`evaluations/trust-signal/scenarios.json`](evaluations/trust
 ## Validation evidence
 
 The package includes standalone PHP checks for Trust authorization and Titan Apps integration boundaries, plus an evidence-convergence regression script and per-file SHA-256 integrity entries in `extension.json`. These are supplied validation artifacts; a repository commit does not itself imply that a deployment-specific Laravel integration test has been run.
+
+The first two checks can run from the repository root without a Laravel installation:
+
+```bash
+php tests/standalone-agent3-pass6-trust-authorization.php
+php tests/standalone-agent3-titan-apps-convergence.php
+```
+
+`Tests/Pass4EvidenceConvergenceTest.php` is an extraction-context regression check. It expects the preserved donor ZIP in the surrounding package workspace, so it is intentionally not presented as a standalone repository test.
 
 ## Version and source
 
