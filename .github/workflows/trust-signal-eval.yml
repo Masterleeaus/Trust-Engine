@@ -1,0 +1,46 @@
+name: Trust Signal Evaluation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'System/Services/TrustEvaluator.php'
+      - 'evaluations/trust-signal/**'
+      - 'scripts/trust-signal-eval.php'
+      - '.github/workflows/trust-signal-eval.yml'
+  pull_request:
+    paths:
+      - 'System/Services/TrustEvaluator.php'
+      - 'evaluations/trust-signal/**'
+      - 'scripts/trust-signal-eval.php'
+      - '.github/workflows/trust-signal-eval.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  trust-signal-eval:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+
+      - name: Run deterministic trust signal evaluation
+        run: php scripts/trust-signal-eval.php
+
+      - name: Upload evaluation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: trust-signal-eval-${{ github.sha }}
+          path: |
+            eval-results/trust-signal-latest.json
+            eval-results/trust-signal-latest.md
+          if-no-files-found: warn
