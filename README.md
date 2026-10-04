@@ -12,7 +12,7 @@
   <a href="#overview">Overview</a> ·
   <a href="#measured-evidence">Measured evidence</a> ·
   <a href="#what-is-new">What is new</a> ·
-  <a href="#capabilities">Capabilities</a> ·
+  <a href="#verified-capabilities">Verified capabilities</a> ·
   <a href="#architecture">Architecture</a> ·
   <a href="#evidence">Evidence</a> ·
   <a href="#quickstart">Quickstart</a>
@@ -75,7 +75,7 @@ The repository's technical signature is the separation of **captured evidence**,
 - **Not claimed:** GPS as proof of attendance or truth, or production certification.
 
 
-## Capabilities
+## Verified capabilities
 
 | Capability | What the implementation delivers | Source |
 |---|---|---|
