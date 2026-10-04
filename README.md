@@ -168,6 +168,8 @@ The test corpus is [`evaluations/trust-signal/scenarios.json`](evaluations/trust
 
 ## Validation evidence
 
+The evaluator and the first two checks require PHP CLI 8.0+ on `PATH`. They use only the PHP standard library; no Composer, Laravel installation, database, or host service is required for these standalone commands. A compatible Titan Zero/MagicAI Laravel host is required for the installation commands above.
+
 The package includes standalone PHP checks for Trust authorization and Titan Apps integration boundaries, plus an evidence-convergence regression script and per-file SHA-256 integrity entries in `extension.json`. These are supplied validation artifacts; a repository commit does not itself imply that a deployment-specific Laravel integration test has been run.
 
 The first two checks can run from the repository root without a Laravel installation:
