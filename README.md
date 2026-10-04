@@ -117,6 +117,7 @@ tests/ and Tests/                        Standalone checks and extraction-contex
 evaluations/                             Fixed trust-signal scenario corpus
 scripts/                                 Reproducible standalone evaluators
 eval-results/                            Committed Markdown and machine-readable results
+PROVENANCE.md                            Source extraction and unresolved licensing/attribution status
 assets/                                  Original branded banner and architecture infographic
 ```
 
