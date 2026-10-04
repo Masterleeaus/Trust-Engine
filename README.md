@@ -142,7 +142,7 @@ The public client sign-off flow is intentionally token-based and time-limited. I
 
 The deterministic evaluation checks whether the packaged GPS heuristic matches an explicit rubric for missing coordinates, reported accuracy thresholds, provenance flags, and boundary values. It measures this coarse signal behavior only; GPS does not establish attendance or truth.
 
-Evaluated **4 October 2026** against commit `8fc45e70d92065ce134c393c4549472ce0cc9754` with PHP 8.2.34. The corpus contains **32 fixed scenarios**, seed `20261004`, with random sampling disabled (SHA-256: `b0e923ad40cfc76c3537f0123abe4aa230a53c8ed7332353f554459f2837fdd1`).
+Evaluated successfully **4 October 2026** on PR merge ref `dae60e6275c1e5e01cad70aeff2df454225269b3` (PR head `476dcbddcf9e4dbbb643bead70799f560fa52d53`, audited base `0497585a786e44125eb3ed9ac554321ff7b1a2f3`) with PHP 8.2.34 via the [current-head CI run](https://github.com/Masterleeaus/Trust-Engine/actions/runs/37175925023). The corpus contains **32 fixed scenarios**, seed `20261004`, with random sampling disabled (SHA-256: `b0e923ad40cfc76c3537f0123abe4aa230a53c8ed7332353f554459f2837fdd1`).
 
 | Metric | Result |
 |---|---:|
@@ -164,7 +164,7 @@ Reproduce with one command:
 php scripts/trust-signal-eval.php
 ```
 
-The test corpus is [`evaluations/trust-signal/scenarios.json`](evaluations/trust-signal/scenarios.json), and the runner is [`scripts/trust-signal-eval.php`](scripts/trust-signal-eval.php). Full [Markdown results](eval-results/trust-signal-latest.md) and [machine-readable JSON](eval-results/trust-signal-latest.json) are committed. [CI run](https://github.com/Masterleeaus/Trust-Engine/actions/runs/37172099402) passed on the evaluated commit.
+The test corpus is [`evaluations/trust-signal/scenarios.json`](evaluations/trust-signal/scenarios.json), and the runner is [`scripts/trust-signal-eval.php`](scripts/trust-signal-eval.php). Full [Markdown results](eval-results/trust-signal-latest.md) and [machine-readable JSON](eval-results/trust-signal-latest.json) are committed. The [current-head CI run](https://github.com/Masterleeaus/Trust-Engine/actions/runs/37175925023) passed with 32 cases, 0 scenario failures, and uploaded the generated reports.
 
 ## Validation evidence
 
