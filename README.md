@@ -13,6 +13,8 @@
   <a href="#installation">Installation</a>
 </p>
 
+[![Trust signal evaluation](https://github.com/Masterleeaus/Trust-Engine/actions/workflows/trust-signal-eval.yml/badge.svg)](https://github.com/Masterleeaus/Trust-Engine/actions/workflows/trust-signal-eval.yml)
+
 ---
 
 ## Evidence assurance for work performed in the real world
@@ -116,6 +118,34 @@ Then open the Trust review, evidence, and incident screens in the host dashboard
 ### Sign-off storage note
 
 The public client sign-off flow is intentionally token-based and time-limited. In this v2.1.0 package, its controller writes signature images to Laravel’s `public` storage disk. Review public URL exposure and the host’s privacy requirements before enabling the flow for sensitive signatures.
+
+## Reproducible trust-signal evaluation
+
+The deterministic evaluation checks whether the packaged GPS heuristic matches an explicit rubric for missing coordinates, reported accuracy thresholds, provenance flags, and boundary values. It measures this coarse signal behavior only; GPS does not establish attendance or truth.
+
+Evaluated **4 October 2026** against commit `8fc45e70d92065ce134c393c4549472ce0cc9754` with PHP 8.2.34. The corpus contains **32 fixed scenarios**, seed `20261004`, with random sampling disabled (SHA-256: `b0e923ad40cfc76c3537f0123abe4aa230a53c8ed7332353f554459f2837fdd1`).
+
+| Metric | Result |
+|---|---:|
+| Trust-level mismatches | 0 / 32 |
+| Quality-flag mismatches | 0 / 32 |
+| High signals with no GPS | 0 / 6 |
+| High signals with accuracy over 500 m | 0 / 5 |
+| Correct medium signals for 100 m < accuracy <= 500 m | 8 / 8 |
+| GPS-present cases missing accuracy that still receive high | 3 / 3 |
+| Missing-accuracy cases flagged `no_accuracy` | 3 / 3 |
+| Scenario failures | 0 / 32 |
+| Illustrative always-high/no-flags baseline output mismatches | 25 / 32 |
+
+The missing-accuracy result is a design diagnostic: these cases carry `no_accuracy`, but the implementation still assigns a high tier when coordinates are present. A high tier is only a coarse signal. The baseline is a deliberately simple bypass control, not a competing product.
+
+Reproduce with one command:
+
+```bash
+php scripts/trust-signal-eval.php
+```
+
+The test corpus is [`evaluations/trust-signal/scenarios.json`](evaluations/trust-signal/scenarios.json), and the runner is [`scripts/trust-signal-eval.php`](scripts/trust-signal-eval.php). Full [Markdown results](eval-results/trust-signal-latest.md) and [machine-readable JSON](eval-results/trust-signal-latest.json) are committed. [CI run](https://github.com/Masterleeaus/Trust-Engine/actions/runs/37172099402) passed on the evaluated commit.
 
 ## Validation evidence
 
