@@ -1,0 +1,501 @@
+{
+  "title": "Titan Trust GPS signal evaluation",
+  "seed": 20261004,
+  "random_sampling": false,
+  "baseline": {
+    "name": "always-high/no-flags",
+    "behavior": "Labels every observation high and emits no quality flags; illustrative bypass control only."
+  },
+  "rubric": "Check TrustEvaluator's documented GPS-presence and accuracy thresholds, flag coverage, and threshold boundaries. Missing accuracy is expected to emit no_accuracy; its level is reported separately as a design diagnostic. This does not claim GPS proves attendance or truth.",
+  "cases": [
+    {
+      "id": "accurate_device_zero_error",
+      "category": "high-accuracy",
+      "tags": [
+        "complete-high"
+      ],
+      "lat": -37.8136,
+      "lng": 144.9631,
+      "accuracy_m": 0,
+      "source": "device",
+      "expected_level": "high",
+      "expected_flags": []
+    },
+    {
+      "id": "accurate_device_50m",
+      "category": "high-accuracy",
+      "tags": [
+        "complete-high"
+      ],
+      "lat": -37.8136,
+      "lng": 144.9631,
+      "accuracy_m": 50,
+      "source": "device",
+      "expected_level": "high",
+      "expected_flags": []
+    },
+    {
+      "id": "accuracy_boundary_100m",
+      "category": "threshold-boundary",
+      "tags": [
+        "complete-high"
+      ],
+      "lat": -37.8136,
+      "lng": 144.9631,
+      "accuracy_m": 100,
+      "source": "device",
+      "expected_level": "high",
+      "expected_flags": []
+    },
+    {
+      "id": "accurate_missing_source",
+      "category": "source-provenance",
+      "tags": [
+        "complete-high"
+      ],
+      "lat": -37.8136,
+      "lng": 144.9631,
+      "accuracy_m": 25,
+      "source": null,
+      "expected_level": "high",
+      "expected_flags": []
+    },
+    {
+      "id": "accurate_server_source",
+      "category": "source-provenance",
+      "tags": [
+        "non-device-source"
+      ],
+      "lat": -37.8136,
+      "lng": 144.9631,
+      "accuracy_m": 25,
+      "source": "server",
+      "expected_level": "high",
+      "expected_flags": [
+        "non_device_source"
+      ]
+    },
+    {
+      "id": "accurate_manual_source",
+      "category": "source-provenance",
+      "tags": [
+        "non-device-source"
+      ],
+      "lat": -37.8136,
+      "lng": 144.9631,
+      "accuracy_m": 25,
+      "source": "manual",
+      "expected_level": "high",
+      "expected_flags": [
+        "non_device_source"
+      ]
+    },
+    {
+      "id": "accurate_device_source",
+      "category": "source-provenance",
+      "tags": [
+        "complete-high"
+      ],
+      "lat": -37.8136,
+      "lng": 144.9631,
+      "accuracy_m": 25,
+      "source": "device",
+      "expected_level": "high",
+      "expected_flags": []
+    },
+    {
+      "id": "accurate_empty_source",
+      "category": "source-provenance",
+      "tags": [
+        "complete-high"
+      ],
+      "lat": -37.8136,
+      "lng": 144.9631,
+      "accuracy_m": 25,
+      "source": "",
+      "expected_level": "high",
+      "expected_flags": []
+    },
+    {
+      "id": "just_over_100m_medium",
+      "category": "threshold-boundary",
+      "tags": [
+        "medium-threshold"
+      ],
+      "lat": -37.8136,
+      "lng": 144.9631,
+      "accuracy_m": 100.01,
+      "source": "device",
+      "expected_level": "medium",
+      "expected_flags": [
+        "low_accuracy"
+      ]
+    },
+    {
+      "id": "150m_medium",
+      "category": "medium-accuracy",
+      "tags": [
+        "medium-threshold"
+      ],
+      "lat": -37.8136,
+      "lng": 144.9631,
+      "accuracy_m": 150,
+      "source": "device",
+      "expected_level": "medium",
+      "expected_flags": [
+        "low_accuracy"
+      ]
+    },
+    {
+      "id": "499_99m_medium",
+      "category": "threshold-boundary",
+      "tags": [
+        "medium-threshold"
+      ],
+      "lat": -37.8136,
+      "lng": 144.9631,
+      "accuracy_m": 499.99,
+      "source": "device",
+      "expected_level": "medium",
+      "expected_flags": [
+        "low_accuracy"
+      ]
+    },
+    {
+      "id": "accuracy_boundary_500m_medium",
+      "category": "threshold-boundary",
+      "tags": [
+        "medium-threshold"
+      ],
+      "lat": -37.8136,
+      "lng": 144.9631,
+      "accuracy_m": 500,
+      "source": "device",
+      "expected_level": "medium",
+      "expected_flags": [
+        "low_accuracy"
+      ]
+    },
+    {
+      "id": "medium_server_source",
+      "category": "source-provenance",
+      "tags": [
+        "medium-threshold",
+        "non-device-source"
+      ],
+      "lat": -37.8136,
+      "lng": 144.9631,
+      "accuracy_m": 100.01,
+      "source": "server",
+      "expected_level": "medium",
+      "expected_flags": [
+        "low_accuracy",
+        "non_device_source"
+      ]
+    },
+    {
+      "id": "medium_import_source",
+      "category": "source-provenance",
+      "tags": [
+        "medium-threshold",
+        "non-device-source"
+      ],
+      "lat": -37.8136,
+      "lng": 144.9631,
+      "accuracy_m": 200,
+      "source": "import",
+      "expected_level": "medium",
+      "expected_flags": [
+        "low_accuracy",
+        "non_device_source"
+      ]
+    },
+    {
+      "id": "just_over_500m_low",
+      "category": "threshold-boundary",
+      "tags": [
+        "very-low-accuracy"
+      ],
+      "lat": -37.8136,
+      "lng": 144.9631,
+      "accuracy_m": 500.01,
+      "source": "device",
+      "expected_level": "low",
+      "expected_flags": [
+        "low_accuracy",
+        "very_low_accuracy"
+      ]
+    },
+    {
+      "id": "1000m_low",
+      "category": "very-low-accuracy",
+      "tags": [
+        "very-low-accuracy"
+      ],
+      "lat": -37.8136,
+      "lng": 144.9631,
+      "accuracy_m": 1000,
+      "source": "device",
+      "expected_level": "low",
+      "expected_flags": [
+        "low_accuracy",
+        "very_low_accuracy"
+      ]
+    },
+    {
+      "id": "latitude_missing",
+      "category": "missing-position",
+      "tags": [
+        "no-gps"
+      ],
+      "lat": null,
+      "lng": 144.9631,
+      "accuracy_m": 25,
+      "source": "device",
+      "expected_level": "low",
+      "expected_flags": [
+        "no_gps"
+      ]
+    },
+    {
+      "id": "longitude_missing",
+      "category": "missing-position",
+      "tags": [
+        "no-gps"
+      ],
+      "lat": -37.8136,
+      "lng": null,
+      "accuracy_m": 25,
+      "source": "device",
+      "expected_level": "low",
+      "expected_flags": [
+        "no_gps"
+      ]
+    },
+    {
+      "id": "both_coordinates_missing",
+      "category": "missing-position",
+      "tags": [
+        "no-gps"
+      ],
+      "lat": null,
+      "lng": null,
+      "accuracy_m": 25,
+      "source": "device",
+      "expected_level": "low",
+      "expected_flags": [
+        "no_gps"
+      ]
+    },
+    {
+      "id": "missing_position_and_600m",
+      "category": "missing-position",
+      "tags": [
+        "no-gps",
+        "very-low-accuracy"
+      ],
+      "lat": null,
+      "lng": 144.9631,
+      "accuracy_m": 600,
+      "source": "device",
+      "expected_level": "low",
+      "expected_flags": [
+        "no_gps",
+        "low_accuracy",
+        "very_low_accuracy"
+      ]
+    },
+    {
+      "id": "501m_server_source",
+      "category": "source-provenance",
+      "tags": [
+        "very-low-accuracy",
+        "non-device-source"
+      ],
+      "lat": -37.8136,
+      "lng": 144.9631,
+      "accuracy_m": 501,
+      "source": "web",
+      "expected_level": "low",
+      "expected_flags": [
+        "low_accuracy",
+        "very_low_accuracy",
+        "non_device_source"
+      ]
+    },
+    {
+      "id": "missing_accuracy_device",
+      "category": "missing-accuracy",
+      "tags": [
+        "missing-accuracy",
+        "missing-accuracy-with-gps"
+      ],
+      "lat": -37.8136,
+      "lng": 144.9631,
+      "accuracy_m": null,
+      "source": "device",
+      "expected_level": "high",
+      "expected_flags": [
+        "no_accuracy"
+      ]
+    },
+    {
+      "id": "missing_accuracy_no_source",
+      "category": "missing-accuracy",
+      "tags": [
+        "missing-accuracy",
+        "missing-accuracy-with-gps"
+      ],
+      "lat": -37.8136,
+      "lng": 144.9631,
+      "accuracy_m": null,
+      "source": null,
+      "expected_level": "high",
+      "expected_flags": [
+        "no_accuracy"
+      ]
+    },
+    {
+      "id": "missing_accuracy_server_source",
+      "category": "missing-accuracy",
+      "tags": [
+        "missing-accuracy",
+        "missing-accuracy-with-gps",
+        "non-device-source"
+      ],
+      "lat": -37.8136,
+      "lng": 144.9631,
+      "accuracy_m": null,
+      "source": "server",
+      "expected_level": "high",
+      "expected_flags": [
+        "no_accuracy",
+        "non_device_source"
+      ]
+    },
+    {
+      "id": "equator_accuracy_boundary",
+      "category": "coordinate-boundary",
+      "tags": [
+        "complete-high"
+      ],
+      "lat": 0,
+      "lng": 0,
+      "accuracy_m": 100,
+      "source": "device",
+      "expected_level": "high",
+      "expected_flags": []
+    },
+    {
+      "id": "equator_medium_accuracy",
+      "category": "coordinate-boundary",
+      "tags": [
+        "medium-threshold"
+      ],
+      "lat": 0,
+      "lng": 0,
+      "accuracy_m": 100.01,
+      "source": "device",
+      "expected_level": "medium",
+      "expected_flags": [
+        "low_accuracy"
+      ]
+    },
+    {
+      "id": "another_medium_accuracy",
+      "category": "medium-accuracy",
+      "tags": [
+        "medium-threshold"
+      ],
+      "lat": -37.8136,
+      "lng": 144.9631,
+      "accuracy_m": 200,
+      "source": "manual",
+      "expected_level": "medium",
+      "expected_flags": [
+        "low_accuracy",
+        "non_device_source"
+      ]
+    },
+    {
+      "id": "case-sensitive_device_source",
+      "category": "source-provenance",
+      "tags": [
+        "non-device-source"
+      ],
+      "lat": -37.8136,
+      "lng": 144.9631,
+      "accuracy_m": 25,
+      "source": "Device",
+      "expected_level": "high",
+      "expected_flags": [
+        "non_device_source"
+      ]
+    },
+    {
+      "id": "mobile_source",
+      "category": "source-provenance",
+      "tags": [
+        "non-device-source"
+      ],
+      "lat": -37.8136,
+      "lng": 144.9631,
+      "accuracy_m": 25,
+      "source": "mobile",
+      "expected_level": "high",
+      "expected_flags": [
+        "non_device_source"
+      ]
+    },
+    {
+      "id": "missing_accuracy_and_latitude",
+      "category": "missing-input",
+      "tags": [
+        "no-gps",
+        "missing-accuracy"
+      ],
+      "lat": null,
+      "lng": 144.9631,
+      "accuracy_m": null,
+      "source": "device",
+      "expected_level": "low",
+      "expected_flags": [
+        "no_gps",
+        "no_accuracy"
+      ]
+    },
+    {
+      "id": "missing_position_very_low_accuracy",
+      "category": "missing-input",
+      "tags": [
+        "no-gps",
+        "very-low-accuracy"
+      ],
+      "lat": -37.8136,
+      "lng": null,
+      "accuracy_m": 501,
+      "source": null,
+      "expected_level": "low",
+      "expected_flags": [
+        "no_gps",
+        "low_accuracy",
+        "very_low_accuracy"
+      ]
+    },
+    {
+      "id": "api_source_at_100m",
+      "category": "source-provenance",
+      "tags": [
+        "non-device-source"
+      ],
+      "lat": -37.8136,
+      "lng": 144.9631,
+      "accuracy_m": 100,
+      "source": "api",
+      "expected_level": "high",
+      "expected_flags": [
+        "non_device_source"
+      ]
+    }
+  ]
+}
