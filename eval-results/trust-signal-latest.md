@@ -1,7 +1,7 @@
 # Trust Signal Evaluation
 
-- Evaluated: 2026-10-04T04:04:41Z
-- Evaluator commit: dae60e6275c1e5e01cad70aeff2df454225269b3 (PR head 476dcbddcf9e4dbbb643bead70799f560fa52d53; base 0497585a786e44125eb3ed9ac554321ff7b1a2f3)
+- Evaluated: 2026-10-04T04:07:38Z
+- Evaluator commit: 847efa9dfec546c019396b672e4d99203ae10fa6 (PR head b08409203dfc9f1e6213837ee47bddf02f4bffb4; base 0497585a786e44125eb3ed9ac554321ff7b1a2f3)
 - Scenarios: 32 fixed cases; seed 20261004; random sampling: no
 - Scenario SHA-256: b0e923ad40cfc76c3537f0123abe4aa230a53c8ed7332353f554459f2837fdd1
 - PHP: 8.2.34
