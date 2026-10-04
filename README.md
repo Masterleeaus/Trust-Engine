@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/trust-engine-banner.jpg" alt="Titan Trust Engine — field evidence moves through a governed assurance trail" width="100%" />
+  <img src="assets/trust-engine-banner.svg" alt="Titan Trust Engine — field evidence moves through a governed assurance trail" width="100%" />
 </p>
 
 <h1 align="center">Trust-Engine</h1>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
+  <title id="title">Titan Trust Engine</title>
+  <desc id="desc">A teal and amber assurance trail showing field evidence capture, readiness, canonical proof, and human review.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071321"/><stop offset="1" stop-color="#164455"/></linearGradient>
+    <linearGradient id="trail" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#55e0cf"/><stop offset=".72" stop-color="#55e0cf"/><stop offset="1" stop-color="#efb968"/></linearGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#fff" stroke-opacity=".06"/></pattern>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9" fill="#e9b66c"/></marker>
+    <style>
+      .title{font:700 42px Segoe UI,Arial,sans-serif;fill:#f4f8fc}.sub{font:600 15px Segoe UI,Arial,sans-serif;letter-spacing:2.4px;fill:#cce8e7}.eyebrow{font:700 12px Segoe UI,Arial,sans-serif;letter-spacing:2.5px;fill:#70e1d2}.label{font:700 12px Segoe UI,Arial,sans-serif;fill:#eef8fb}.tiny{font:400 11px Segoe UI,Arial,sans-serif;fill:#b5cbd0}
+    </style>
+  </defs>
+  <rect width="1200" height="360" rx="22" fill="url(#bg)"/><rect width="1200" height="360" rx="22" fill="url(#grid)"/>
+  <circle cx="1090" cy="45" r="210" fill="#e3b568" opacity=".10"/><circle cx="120" cy="390" r="220" fill="#1bb2a6" opacity=".13"/>
+  <text x="70" y="66" class="eyebrow">TITAN � EVIDENCE ASSURANCE � PHP / LARAVEL</text>
+  <text x="70" y="125" class="title">TrustEngine</text>
+  <text x="72" y="160" class="sub">CAPTURE    READINESS    PROVENANCE    ACCOUNTABLE REVIEW</text>
+  <path d="M80 246H1110" stroke="#527a85" stroke-width="2" opacity=".8"/>
+  <path d="M126 246H1080" stroke="url(#trail)" stroke-width="3" marker-end="url(#arrow)"/>
+  <g>
+    <circle cx="126" cy="246" r="24" fill="#123b48" stroke="#58ded1" stroke-width="2"/><text x="126" y="251" text-anchor="middle" class="label">01</text><text x="126" y="292" text-anchor="middle" class="label">Capture</text><text x="126" y="312" text-anchor="middle" class="tiny">files + context</text>
+    <circle cx="365" cy="246" r="24" fill="#123b48" stroke="#58ded1" stroke-width="2"/><text x="365" y="251" text-anchor="middle" class="label">02</text><text x="365" y="292" text-anchor="middle" class="label">Readiness</text><text x="365" y="312" text-anchor="middle" class="tiny">required proof + gaps</text>
+    <circle cx="604" cy="246" r="24" fill="#123b48" stroke="#58ded1" stroke-width="2"/><text x="604" y="251" text-anchor="middle" class="label">03</text><text x="604" y="292" text-anchor="middle" class="label">Assurance</text><text x="604" y="312" text-anchor="middle" class="tiny">hash + company scope</text>
+    <circle cx="843" cy="246" r="24" fill="#123b48" stroke="#58ded1" stroke-width="2"/><text x="843" y="251" text-anchor="middle" class="label">04</text><text x="843" y="292" text-anchor="middle" class="label">Audit trail</text><text x="843" y="312" text-anchor="middle" class="tiny">timeline + incidents</text>
+    <circle cx="1082" cy="246" r="24" fill="#4a3a2a" stroke="#efb968" stroke-width="2"/><text x="1082" y="251" text-anchor="middle" class="label">05</text><text x="1082" y="292" text-anchor="middle" class="label">Human review</text><text x="1082" y="312" text-anchor="middle" class="tiny">authority stays external</text>
+  </g>
+  <text x="70" y="342" class="tiny">Evidence can support assurance; trust data never grants action authority</text>
+</svg>
+
