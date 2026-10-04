@@ -2,130 +2,126 @@
   <img src="assets/trust-engine-banner.jpg" alt="Titan Trust Engine — field evidence moves through a governed assurance trail" width="100%" />
 </p>
 
-<h1 align="center">Titan Trust Engine</h1>
+<h1 align="center">Trust-Engine</h1>
 
-<p align="center"><strong>Turn field activity into traceable proof, clear evidence requirements, and accountable review.</strong></p>
+<p align="center"><strong>Titan Trust Engine turns field activity into traceable evidence, explainable readiness, and governed review.</strong></p>
+
+<p align="center">PHP/Laravel extension for Titan Zero/MagicAI</p>
 
 <p align="center">
-  <a href="#architecture">Architecture</a> ·
+  <a href="#product-overview">Product</a> ·
   <a href="#capabilities">Capabilities</a> ·
-  <a href="#governance-and-boundaries">Governance</a> ·
-  <a href="#ai-and-agent-boundary">AI boundary</a> ·
-  <a href="#installation">Installation</a>
+  <a href="#architecture">Architecture</a> ·
+  <a href="#evidence">Evidence</a> ·
+  <a href="#quickstart">Quickstart</a>
 </p>
 
 [![Trust signal evaluation](https://github.com/Masterleeaus/Trust-Engine/actions/workflows/trust-signal-eval.yml/badge.svg)](https://github.com/Masterleeaus/Trust-Engine/actions/workflows/trust-signal-eval.yml)
 
 ---
 
-## Evidence assurance for work performed in the real world
+## Product overview
 
-Titan Trust is a PHP/Laravel extension that adds an evidence and assurance layer to job-based operations. It helps teams capture proof at the point of work, check it against configured requirements, preserve the related context, and route exceptions for review.
+Trust-Engine is an evidence-assurance extension for job-based operations. It helps field teams capture proof at the point of work, helps reviewers understand whether the required evidence is present, and preserves the context needed to make an accountable decision.
 
-The package connects **photos and files, job attendance, client sign-off, incidents, evidence rules, and job timelines** to the host platform’s company context and Titan Zero Assurance services. Evidence can be referenced with its company, job, file, hash, capture, and trust metadata intact.
+Built for field-service, operations, compliance, and platform teams, the package connects **files and photos, attendance and presence, client sign-off, incidents, evidence rules, and job timelines** to the host platform's company context and Titan Zero Assurance services. Evidence is not just stored: it can be inspected with its job, capture, file-hash, and trust metadata intact.
 
-**The core design principle:** evidence can support an assurance decision, but trust data does not grant action authority. Review, overrides, and other state changes remain behind host permissions and governed capabilities.
+The product value is straightforward:
+
+- reviewers see what is required, what was captured, and what is still missing;
+- assurance integrations receive canonical evidence references with useful provenance;
+- exceptions become incidents, timeline events, and permission-checked review actions;
+- host workflows can consume read projections and governed capabilities without turning a trust signal into authority.
+
+## Capabilities
+
+| Capability | What the implementation delivers | Source |
+|---|---|---|
+| **Evidence capture and integrity** | Captures job, item, incident, and site evidence; records file metadata and SHA-256 hashes; applies MIME and upload-size policy. | [`CaptureController.php`](System/Http/Controllers/CaptureController.php), [`EvidenceController.php`](System/Http/Controllers/EvidenceController.php), [`config/titantrust.php`](config/titantrust.php) |
+| **Policy-driven readiness** | Selects the most specific tenant rule by template, job type, and site type, then returns required, captured, missing, and ready values. | [`EvidenceReadiness.php`](System/Services/EvidenceReadiness.php) |
+| **Presence and trust signals** | Derives attendance boundaries from evidence captures and evaluates GPS presence, reported accuracy, and source provenance into explicit flags and a coarse level. | [`AttendanceDeriver.php`](System/Services/AttendanceDeriver.php), [`TrustEvaluator.php`](System/Services/TrustEvaluator.php) |
+| **Canonical assurance mapping** | Maps evidence, sign-offs, incidents, and attendance into the host's [`EvidenceRef`](System/Assurance/EvidenceRefFactory.php) model; incident signals can be emitted through the assurance bridge. | [`EvidenceRefFactory.php`](System/Assurance/EvidenceRefFactory.php), [`AssuranceBridge.php`](System/Assurance/AssuranceBridge.php) |
+| **Review and audit** | Writes typed job events, maintains compliance state, exposes job timelines, and supports incident resolution, sign-off, rules, and manager review. | [`JobEventWriter.php`](System/Audit/JobEventWriter.php), [`ComplianceState.php`](System/Compliance/ComplianceState.php), [`ManagerReviewController.php`](Http/Controllers/ManagerReviewController.php) |
+| **Governed host integration** | Publishes risk-classified workforce capabilities and authority-neutral app contributions for the host's workflow and interface layers. | [`workforce-manifest.json`](resources/workforce/workforce-manifest.json), [`interface-manifest.json`](resources/interface/interface-manifest.json) |
 
 ## Architecture
 
 <p align="center">
-  <img src="assets/trust-engine-architecture.svg" alt="Trust Engine flow from evidence capture and policy checks through assurance records, human review, and separate governed authority" width="100%" />
+  <img src="assets/trust-engine-architecture.svg" alt="Trust-Engine flow from evidence capture and policy checks through assurance records, human review, and separate governed authority" width="100%" />
 </p>
 
-| Layer | Responsibility | Packaged components |
+Trust-Engine follows a deliberate path from field input to reviewable assurance:
+
+| Layer | Design choice | Result |
 |---|---|---|
-| **Capture** | Collect work proof and context at job level. | Evidence uploads, capture metadata, GPS presence and accuracy signals, attendance/presence, incidents, client sign-off. |
-| **Evidence policy** | Define what proof is required and show gaps. | Rules scoped by job template, job type, and site type; readiness results for before, after, incident, sign-off, and general evidence. |
-| **Assurance bridge** | Normalize proof for the host’s assurance layer. | `EvidenceRefFactory` maps evidence, sign-offs, incidents, and attendance into canonical evidence references; incident signals can be emitted through `AssuranceBridge`. |
-| **Audit and review** | Preserve job activity and make exceptions reviewable. | Typed job events and compliance states, a job timeline, manager review, incident resolution, and rule management. |
-| **Governed integration** | Expose capabilities to the central workforce and app surfaces. | Company-scoped workforce manifest, risk classes, read/write capability declarations, and authority-neutral interface contributions. |
+| **Capture** | Evidence, attendance, sign-off, and incident records share job and company context. | Reviewers can connect proof to the work it is meant to support. |
+| **Evidence policy** | Rules are selected by structured context rather than hidden in free-form instructions. | Readiness is explainable: the response includes requirements, counts, gaps, and a final ready value. |
+| **Assurance bridge** | `EvidenceRefFactory` preserves identifiers, hashes, storage references, and job/capture metadata. | Downstream assurance services receive canonical, provenance-rich evidence. |
+| **Review and audit** | Typed events, compliance states, timelines, incidents, and explicit authorization work together. | Exceptions remain visible and reviewable instead of disappearing into a binary trust label. |
+| **Host boundary** | Workforce and interface manifests describe capabilities, risk, offline behavior, and governed writes. | Composition can happen in the host while domain authority stays with the extension and its permissions. |
 
-## Capabilities
+## Engineering choices worth noticing
 
-### Job evidence capture
+- **Fail-closed tenancy:** `TenantScoped` resolves `company_id` from the host execution context or authenticated company, and blocks scoped reads and writes when no valid context exists.
+- **Evidence is not authority:** `TrustAuthorization` checks explicit permissions for review, override, incident resolution, and rule management; capability manifests classify writes as governed domain actions.
+- **Explainable policy results:** `EvidenceReadiness` exposes the selected rule and the evidence gap behind `ready`, making the result inspectable rather than opaque.
+- **Offline means read-only:** interface contributions allow cached projections, while governed actions remain online and permissioned.
+- **Host-compatible installation:** `extension.json` describes PHP/Laravel dependencies, migrations, seeders, named routes, and integrity hashes for the Titan host.
 
-- Capture evidence against a job, job item, incident, or site context.
-- Store file metadata, original name, MIME type, size, storage location, and SHA-256 hash.
-- Preserve who captured the evidence, when it was captured, GPS coordinates, reported accuracy, source, trust level, and trust flags where supplied.
-- Configure accepted evidence types and upload limits in the extension configuration. The packaged defaults allow JPEG, PNG, WebP, and PDF with a 25 MB limit.
+## Integration surface for AI-enabled workflows
 
-### Evidence requirements and readiness
+Trust-Engine is designed as a reliable evidence and control layer that a host workflow or agent can consume. The workforce manifest exposes concrete capabilities such as `trust.evidence.readiness`, `trust.presence.evaluate`, `trust.incident.resolve`, and `trust.compliance.override` with risk profiles and mutation modes. The interface manifest contributes trust summaries, review requirements, and incident review projections with `executable_ui: false`.
 
-Rules can be associated with a job template, job type, or site type. The readiness service selects the most specific matching rule, counts captured evidence by type, and reports what is required, what is present, what is missing, and whether the job meets that rule.
+That division keeps the integration useful for AI-enabled operations while keeping domain semantics and authority explicit. The host may compose these projections into its own workflow or agent experience; this repository owns the evidence, policy, provenance, and governed action surface.
 
-### Presence and attendance signals
+## Evidence
 
-The extension records arrival and departure actions and can derive first and last capture times from evidence records. GPS presence and reported accuracy are turned into explicit trust flags and a coarse signal level for review. These are contextual signals; a high signal is not proof that an event is true.
+### Reproducible trust-signal evaluation
 
-### Client sign-off
+The repository includes a deterministic evaluator for the packaged GPS heuristic. It checks missing coordinates, accuracy thresholds, source-provenance flags, and boundary values. It measures this small signal only; GPS does not establish attendance or truth.
 
-Staff can request a time-limited sign-off link. The customer can provide a name, signature image, and notes; the sign-off record and signature file can then be linked into the assurance evidence model. The configured maximum link lifetime is 720 hours.
+The final PR head was evaluated successfully on **4 October 2026** with PHP 8.2.34 in [CI run 37176074419](https://github.com/Masterleeaus/Trust-Engine/actions/runs/37176074419). The run evaluated merge ref `847efa9dfec546c019396b672e4d99203ae10fa6` from PR head `b08409203dfc9f1e6213837ee47bddf02f4bffb4` and audited base `0497585a786e44125eb3ed9ac554321ff7b1a2f3`.
 
-### Incidents and compliance review
+| Measurement | Result |
+|---|---:|
+| Trust-level mismatches | 0 / 32 |
+| Quality-flag mismatches | 0 / 32 |
+| Scenario failures | 0 / 32 |
+| High signals with no GPS | 0 / 6 |
+| High signals with accuracy over 500 m | 0 / 5 |
+| Correct medium signals for 100 m < accuracy <= 500 m | 8 / 8 |
+| Missing-accuracy cases flagged `no_accuracy` | 3 / 3 |
+| Illustrative always-high/no-flags baseline mismatches | 25 / 32 |
 
-Capture incidents with severity and job context, review open incidents, and resolve them through permission-checked routes. Managers can review compliance and use the explicit override capability where the host grants it. Changes are represented in the host job event and compliance-state model.
+The missing-accuracy cases are intentionally visible as a design diagnostic: coordinates without reported accuracy still receive a high tier while carrying `no_accuracy`. The baseline is an illustrative always-high/no-flags bypass, not a competing product.
 
-### Job audit timeline
+Reproduce the evaluator from the repository root:
 
-Trust writes typed job events and exposes a timeline for job review. The event records use the host’s company, user, team, job, event type, time, severity, message, and metadata fields, allowing the proof trail to sit beside the rest of the job history.
-
-## What makes the design distinctive
-
-- **Requirements are machine-readable:** a job’s evidence policy is selected by matching context, not buried in free-form instructions.
-- **Readiness is explainable:** reviewers can see the evidence counts and missing categories behind a readiness result.
-- **Provenance travels with proof:** canonical evidence references retain file hashes and job/capture context for downstream assurance.
-- **Tenant isolation fails closed:** `company_id` is resolved from the host execution context or authenticated user; missing context blocks scoped reads and writes.
-- **Capabilities are separated from roles:** Titan Trust declares what operations it provides; the central workforce remains the source of truth for workforce and role definitions.
-- **Offline mode cannot raise authority:** cached read projections can remain available while state-changing actions stay online and governed.
-- **Review remains human-governed:** the package can surface evidence and exceptions without turning a trust label into permission to act.
-
-## Governance and boundaries
-
-The extension manifest declares risk-classified capabilities for evidence reads and capture, readiness, timeline, presence evaluation, incident review and resolution, sign-off requests, rules, and compliance review or override. High-risk writes are marked as governed domain writes. The workforce manifest requires fail-closed execution context and receipts; it does not auto-execute business mutations or seed roles into the host.
-
-Titan Trust is an **evidence-assurance component**, not a general-purpose identity-verification product, autonomous permission service, or standalone agent reputation score. Its GPS-based trust level is a small heuristic signal based on location presence and reported accuracy. The consuming assurance and authority layers must interpret evidence in context.
-
-## AI and agent boundary
-
-This repository is supporting infrastructure for AI-enabled operations, not an AI model or autonomous agent. The current tree contains no model client, prompt runner, or agent loop. Its implemented contribution is the evidence and assurance substrate that a host workflow or agent can consume:
-
-- company-scoped evidence, readiness, provenance, timeline, and incident projections;
-- risk-classified workforce capabilities with fail-closed execution context and explicit receipts; and
-- authority-neutral interface contributions where cached reads remain possible but governed actions stay online.
-
-The workforce manifest explicitly disables auto-executed business mutations, and the interface manifest marks contributions as non-executable UI. Any AI or agent composition belongs to the host platform and is not claimed as functionality of this repository.
-
-## Repository map
-
-```text
-System/Services/TrustEvaluator.php       GPS heuristic and explicit quality flags
-System/Services/EvidenceReadiness.php    Context-specific evidence rule selection and gap counts
-System/Assurance/EvidenceRefFactory.php  Canonical evidence/sign-off/incident/presence provenance
-System/Models/Concerns/TenantScoped.php  Fail-closed company execution-context scoping
-System/Http/Controllers/                 Capture, evidence, presence, incidents, rules, and sign-off
-System/Audit/                            Typed job events and review timeline
-System/Compliance/                       Typed job compliance state
-Http/Controllers/                        Host-compatible manager review and timeline controllers
-Database/                                Menu seeder
-database/migrations/                     Evidence, sign-off, attendance, incident, and job-schema migrations
-resources/views/                         Capture, evidence, rules, incidents, sign-off, and review screens
-resources/workforce/                     Risk-classified workforce capability manifest
-resources/interface/                     Authority-neutral Titan app surface contributions
-routes/                                  Extension routes
-config/                                  Evidence storage, upload, MIME, and sign-off settings
-tests/ and Tests/                        Standalone checks and extraction-context regression fixture
-evaluations/                             Fixed trust-signal scenario corpus
-scripts/                                 Reproducible standalone evaluators
-eval-results/                            Committed Markdown and machine-readable results
-PROVENANCE.md                            Source extraction and unresolved licensing/attribution status
-assets/                                  Original branded banner and architecture infographic
+```bash
+php scripts/trust-signal-eval.php
 ```
 
-## Installation
+The fixed corpus is [`evaluations/trust-signal/scenarios.json`](evaluations/trust-signal/scenarios.json); committed [Markdown results](eval-results/trust-signal-latest.md) and [machine-readable results](eval-results/trust-signal-latest.json) preserve the measured output and scenario hash.
 
-This repository contains an extension package for the Titan Zero/MagicAI Laravel host, not a standalone Composer application. The extension manifest declares PHP 8+, Laravel 8+, and the host `menu` extension as its direct package requirements. Use the host’s extension installation workflow so its service provider, migrations, and menus are registered.
+## Quickstart
 
-For an existing compatible host installation, run the extension migration through the host’s module installer. If the host requires the Artisan workflow, clear cached discovery before and after migration:
+### Standalone checks
+
+The evaluator and the first two checks require PHP CLI 8.0+ on `PATH`. They use only the PHP standard library; Composer, Laravel, a database, and a host service are not required for these commands.
+
+```bash
+php scripts/trust-signal-eval.php
+php tests/standalone-agent3-pass6-trust-authorization.php
+php tests/standalone-agent3-titan-apps-convergence.php
+```
+
+`Tests/Pass4EvidenceConvergenceTest.php` is an extraction-context regression check that expects a preserved donor ZIP in the surrounding package workspace, so it is not advertised as a standalone repository test.
+
+### Install into the Titan host
+
+This repository is an extension package, not a standalone Composer application. The manifest declares PHP `>=8.0`, Laravel `>=8`, and the host `menu` extension. Use the host's extension installer so the provider, routes, migrations, and menus are registered.
+
+For a compatible host using the Artisan workflow:
 
 ```bash
 php artisan optimize:clear
@@ -133,59 +129,35 @@ php artisan module:migrate TitanTrust
 php artisan optimize:clear
 ```
 
-Then open the Trust review, evidence, and incident screens in the host dashboard and verify uploads against the deployment’s configured storage and MIME policy. Back up the database before applying migrations. Review `config/titantrust.php`, `config/jobs-evidence.php`, `extension.json`, and the workforce manifests against the specific host version before enabling governed write capabilities.
+Then open the Trust review, evidence, and incident screens in the host dashboard. Review `config/titantrust.php`, `config/jobs-evidence.php`, `extension.json`, and the workforce manifests against the specific host version before enabling governed writes.
 
-### Sign-off storage note
+## Repository map
 
-The public client sign-off flow is intentionally token-based and time-limited. In this v2.1.0 package, its controller writes signature images to Laravel’s `public` storage disk. Review public URL exposure and the host’s privacy requirements before enabling the flow for sensitive signatures.
+| Path | Role |
+|---|---|
+| [`System/Services/TrustEvaluator.php`](System/Services/TrustEvaluator.php) | GPS heuristic and explicit quality flags |
+| [`System/Services/EvidenceReadiness.php`](System/Services/EvidenceReadiness.php) | Context-specific evidence rule selection and gap counts |
+| [`System/Assurance/EvidenceRefFactory.php`](System/Assurance/EvidenceRefFactory.php) | Canonical evidence, sign-off, incident, and presence provenance |
+| [`System/Models/Concerns/TenantScoped.php`](System/Models/Concerns/TenantScoped.php) | Fail-closed company execution-context scoping |
+| [`System/Security/TrustAuthorization.php`](System/Security/TrustAuthorization.php) | Explicit permission checks for governed review actions |
+| [`System/TitanTrustServiceProvider.php`](System/TitanTrustServiceProvider.php) | Host views, translations, routes, migrations, and extension boot |
+| [`System/Http/Controllers/`](System/Http/Controllers/) | Capture, evidence, presence, incidents, rules, and sign-off flows |
+| [`System/Audit/`](System/Audit/) | Typed job events and timeline queries |
+| [`resources/workforce/workforce-manifest.json`](resources/workforce/workforce-manifest.json) | Risk-classified workforce capabilities |
+| [`resources/interface/interface-manifest.json`](resources/interface/interface-manifest.json) | Authority-neutral app contributions |
+| [`database/migrations/`](database/migrations/) | Evidence, sign-off, attendance, incident, and job-schema migrations |
+| [`tests/`](tests/) and [`Tests/`](Tests/) | Standalone checks and extraction-context regression fixture |
+| [`PROVENANCE.md`](PROVENANCE.md) | Source extraction and attribution/licensing status |
 
-## Reproducible trust-signal evaluation
+## Boundaries and source
 
-The deterministic evaluation checks whether the packaged GPS heuristic matches an explicit rubric for missing coordinates, reported accuracy thresholds, provenance flags, and boundary values. It measures this coarse signal behavior only; GPS does not establish attendance or truth.
-
-Evaluated successfully **4 October 2026** on final PR merge ref `847efa9dfec546c019396b672e4d99203ae10fa6` (PR head `b08409203dfc9f1e6213837ee47bddf02f4bffb4`, audited base `0497585a786e44125eb3ed9ac554321ff7b1a2f3`) with PHP 8.2.34 via the [current-head CI run](https://github.com/Masterleeaus/Trust-Engine/actions/runs/37176074419). The corpus contains **32 fixed scenarios**, seed `20261004`, with random sampling disabled (SHA-256: `b0e923ad40cfc76c3537f0123abe4aa230a53c8ed7332353f554459f2837fdd1`).
-
-| Metric | Result |
-|---|---:|
-| Trust-level mismatches | 0 / 32 |
-| Quality-flag mismatches | 0 / 32 |
-| High signals with no GPS | 0 / 6 |
-| High signals with accuracy over 500 m | 0 / 5 |
-| Correct medium signals for 100 m < accuracy <= 500 m | 8 / 8 |
-| GPS-present cases missing accuracy that still receive high | 3 / 3 |
-| Missing-accuracy cases flagged `no_accuracy` | 3 / 3 |
-| Scenario failures | 0 / 32 |
-| Illustrative always-high/no-flags baseline output mismatches | 25 / 32 |
-
-The missing-accuracy result is a design diagnostic: these cases carry `no_accuracy`, but the implementation still assigns a high tier when coordinates are present. A high tier is only a coarse signal. The baseline is a deliberately simple bypass control, not a competing product.
-
-Reproduce with one command:
-
-```bash
-php scripts/trust-signal-eval.php
-```
-
-The test corpus is [`evaluations/trust-signal/scenarios.json`](evaluations/trust-signal/scenarios.json), and the runner is [`scripts/trust-signal-eval.php`](scripts/trust-signal-eval.php). Full [Markdown results](eval-results/trust-signal-latest.md) and [machine-readable JSON](eval-results/trust-signal-latest.json) are committed. The [current-head CI run](https://github.com/Masterleeaus/Trust-Engine/actions/runs/37176074419) passed with 32 cases, 0 scenario failures, and uploaded the generated reports.
-
-## Validation evidence
-
-The evaluator and the first two checks require PHP CLI 8.0+ on `PATH`. They use only the PHP standard library; no Composer, Laravel installation, database, or host service is required for these standalone commands. A compatible Titan Zero/MagicAI Laravel host is required for the installation commands above.
-
-The package includes standalone PHP checks for Trust authorization and Titan Apps integration boundaries, plus an evidence-convergence regression script and per-file SHA-256 integrity entries in `extension.json`. These are supplied validation artifacts; a repository commit does not itself imply that a deployment-specific Laravel integration test has been run.
-
-The first two checks can run from the repository root without a Laravel installation:
-
-```bash
-php tests/standalone-agent3-pass6-trust-authorization.php
-php tests/standalone-agent3-titan-apps-convergence.php
-```
-
-`Tests/Pass4EvidenceConvergenceTest.php` is an extraction-context regression check. It expects the preserved donor ZIP in the surrounding package workspace, so it is intentionally not presented as a standalone repository test.
-
-## Version and source
-
-This repository contains the extracted **Titan Trust Master v2.1.0** package, with the extension files at the repository root so the layout remains recognizable to the host installer. The source ZIP and temporary deployment notes have been removed to avoid duplicating the package in Git; the version is recorded in `extension.json`.
+- Trust-Engine integrates into a compatible Titan Zero/MagicAI Laravel host; it is not a self-contained web application.
+- GPS output is a coarse review signal, not proof of attendance, identity, or truth.
+- The public client sign-off controller writes signature images to Laravel's `public` storage disk in this v2.1.0 package; review storage exposure against the host's privacy requirements.
+- A repository commit does not imply that a deployment-specific Laravel integration test has run.
+- The extracted package version is **Titan Trust Master v2.1.0**, recorded in [`extension.json`](extension.json).
+- [`PROVENANCE.md`](PROVENANCE.md) records the source extraction and states the current licensing/attribution decision. No license is inferred from the repository's public visibility.
 
 ---
 
-**Titan Trust makes job evidence usable for assurance: scoped to the right company, connected to the work it proves, and reviewable without confusing evidence with authority.**
+**Trust-Engine makes field evidence usable for assurance: connected to the work it supports, clear about what it proves, and governed when it matters.**
