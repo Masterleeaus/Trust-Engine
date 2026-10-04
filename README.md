@@ -9,7 +9,9 @@
 <p align="center">PHP/Laravel extension for Titan Zero/MagicAI</p>
 
 <p align="center">
-  <a href="#product-overview">Product</a> ·
+  <a href="#overview">Overview</a> ·
+  <a href="#measured-evidence">Measured evidence</a> ·
+  <a href="#what-is-new">What is new</a> ·
   <a href="#capabilities">Capabilities</a> ·
   <a href="#architecture">Architecture</a> ·
   <a href="#evidence">Evidence</a> ·
@@ -22,7 +24,7 @@
 
 ---
 
-## Product overview
+## Overview
 
 Trust-Engine is an evidence-assurance extension for job-based operations. It helps field teams capture proof at the point of work, helps reviewers understand whether the required evidence is present, and preserves the context needed to make an accountable decision.
 
@@ -34,6 +36,44 @@ The product value is straightforward:
 - assurance integrations receive canonical evidence references with useful provenance;
 - exceptions become incidents, timeline events, and permission-checked review actions;
 - host workflows can consume read projections and governed capabilities without turning a trust signal into authority.
+
+
+## Measured evidence
+
+Trust-Engine includes a deterministic evaluation of its packaged GPS trust-signal heuristic. The current corpus covers missing coordinates, accuracy thresholds, source-provenance flags, boundary values, and an intentionally naive always-high/no-flags baseline.
+
+| Measured property | Current result | Reproduce |
+| --- | ---: | --- |
+| Trust-level mismatches | **0 / 32** | `php scripts/trust-signal-eval.php` |
+| Quality-flag mismatches | **0 / 32** | `php scripts/trust-signal-eval.php` |
+| Scenario failures | **0 / 32** | `php scripts/trust-signal-eval.php` |
+| High signals with no GPS | **0 / 6** | same evaluator |
+| High signals with accuracy over 500 m | **0 / 5** | same evaluator |
+| Always-high/no-flags baseline mismatches | **25 / 32** | same corpus |
+
+**Evaluated:** 4 October 2026 · **PHP:** 8.2.34 · **Scope:** packaged trust-signal heuristic only.
+
+The evaluator does **not** prove attendance, identity, truth, production readiness, or correctness of a destination Laravel deployment. Detailed results and the missing-accuracy diagnostic are preserved in [Evidence](#evidence).
+
+## What is new
+
+The repository's technical signature is the separation of **captured evidence**, **derived trust signals**, **readiness rules**, and **authority**. A signal may inform review without becoming permission to act.
+
+| Mechanism | Engineering distinction | Primary implementation |
+| --- | --- | --- |
+| **Evidence integrity path** | Captures carry file metadata, hashes, job context, and provenance instead of reducing field work to an opaque score. | `System/Http/Controllers/`, `System/Assurance/EvidenceRefFactory.php` |
+| **Explainable readiness** | Structured rules expose required, captured, missing, and ready states so reviewers can see why a job is or is not ready. | `System/Services/EvidenceReadiness.php` |
+| **Signal ≠ authority** | Trust signals remain review inputs; permissioned overrides and governed mutations use separate authorization paths. | `System/Security/TrustAuthorization.php` |
+| **Fail-closed company scope** | Scoped reads and writes require a valid company execution context. | `System/Models/Concerns/TenantScoped.php` |
+| **Authority-neutral host composition** | Interface contributions can be composed by a host while governed writes remain explicit domain actions. | `resources/interface/interface-manifest.json`, `resources/workforce/workforce-manifest.json` |
+
+### Evidence status
+
+- **Implemented:** evidence capture, readiness rules, trust signals, assurance mapping, audit/review surfaces, and host manifests.
+- **Evaluated:** deterministic GPS trust-signal heuristic.
+- **Host-dependent:** Laravel integration, permissions, storage exposure, deployment configuration, and production behaviour.
+- **Not claimed:** GPS as proof of attendance or truth, or production certification.
+
 
 ## Capabilities
 
