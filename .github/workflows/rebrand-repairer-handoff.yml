@@ -1,0 +1,86 @@
+name: Rebrand Repairer Handoff
+
+on:
+  workflow_run:
+    workflows: ["Trust Signal Evaluation"]
+    types: [completed]
+  pull_request:
+    types: [closed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  handoff:
+    if: >
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') ||
+      (github.event_name == 'pull_request' && github.event.pull_request.merged == true) ||
+      github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Stop when repository is already V1 ready
+        id: gate
+        shell: bash
+        run: |
+          if [[ -f V1_READY.md || -f .v1-ready ]]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if git tag --list 'v1*' | grep -q .; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "ready=false" >> "$GITHUB_OUTPUT"
+
+      - name: Emit next repairer event
+        if: steps.gate.outputs.ready != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SOURCE_EVENT: ${{ github.event_name }}
+          SOURCE_SHA: ${{ github.sha }}
+        shell: bash
+        run: |
+          gh label create repairer-ready --repo "$REPO" --description "Repository is ready for the next repair/rebrand pass" --force || true
+          gh label create rebrand-pipeline --repo "$REPO" --description "Automated rebrand-to-v1 pipeline" --force || true
+
+          EXISTING="$(gh issue list --repo "$REPO" --state open --label repairer-ready --json number --jq 'length')"
+          if [[ "$EXISTING" != "0" ]]; then
+            echo "An open repairer handoff already exists; not creating a duplicate."
+            exit 0
+          fi
+
+          cat > /tmp/repairer-body.md <<EOF
+          ## Automated repairer handoff
+
+          GitHub detected that the previous pass completed successfully.
+
+          **Source event:** `$SOURCE_EVENT`
+          **Source SHA:** `$SOURCE_SHA`
+
+          Take the repository through the next unfinished V1 pass. Do not create blockers. Make the best reasonable repair decision, record consequential assumptions, and continue.
+
+          ### V1 pass order
+          1. Branding/name/logo replacement
+          2. Dead/obsolete code cleanup
+          3. Dependency and security cleanup
+          4. Build/test repair
+          5. README and documentation rewrite
+          6. Metadata/package naming cleanup
+          7. Repository hygiene
+          8. Final QA and release gate
+
+          Before completing this issue, run the applicable build/tests and record what changed and what remains. If the repository satisfies the V1 gate, create `V1_READY.md` (or a `v1.x` tag during release) so this workflow stops issuing further repair passes.
+          EOF
+
+          gh issue create             --repo "$REPO"             --title "[Repairer] Advance repository to next V1 pass"             --body-file /tmp/repairer-body.md             --label repairer-ready             --label rebrand-pipeline
